@@ -190,7 +190,7 @@ number_of_agents
 number_of_agents
 0
 1000
-200.0
+100.0
 1
 1
 NIL
