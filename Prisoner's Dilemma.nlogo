@@ -431,8 +431,8 @@ HORIZONTAL
 PLOT
 761
 170
-961
-351
+1089
+354
 Strategies
 tick
 strategies
@@ -456,8 +456,8 @@ PENS
 PLOT
 761
 359
-961
-509
+1090
+584
 Behavior
 tick
 moves
