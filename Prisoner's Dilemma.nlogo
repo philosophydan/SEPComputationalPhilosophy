@@ -429,10 +429,10 @@ NIL
 HORIZONTAL
 
 PLOT
-761
-170
-1089
-354
+31
+503
+397
+729
 Strategies
 tick
 strategies
@@ -454,10 +454,10 @@ PENS
 "111 AllC" 1.0 0 -13345367 true "" ""
 
 PLOT
-761
-359
-1090
-584
+405
+504
+734
+729
 Behavior
 tick
 moves
