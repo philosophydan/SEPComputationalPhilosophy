@@ -16,6 +16,7 @@ patches-own [
 globals [
   total_cooperated
   total_defected
+  stratlist
 ]
 
 ;;  This procedure sets up the patches and patches
@@ -23,6 +24,18 @@ to setup
   clear-all
 
   init-global-counters
+
+  set stratlist [] ;; make stratlist empty and progressively add the included strats
+  if Strategy-000 [set stratlist lput 0 stratlist]
+  if Strategy-001 [set stratlist lput 1 stratlist]
+  if Strategy-010 [set stratlist lput 2 stratlist]
+  if Strategy-011 [set stratlist lput 3 stratlist]
+  if Strategy-100 [set stratlist lput 4 stratlist]
+  if Strategy-101 [set stratlist lput 5 stratlist]
+  if Strategy-110 [set stratlist lput 6 stratlist]
+  if Strategy-111 [set stratlist lput 7 stratlist]
+
+  if (length stratlist = 0) [error "You must include some strategies."]
 
   ;; Initialize all patches
   ask patches [ init-patch ]
@@ -33,9 +46,32 @@ to setup
 end
 
 
+to include-all-strats
+  set Strategy-000 True
+  set Strategy-001 True
+  set Strategy-010 True
+  set Strategy-011 True
+  set Strategy-100 True
+  set Strategy-101 True
+  set Strategy-110 True
+  set Strategy-111 True
+end
+
+to exclude-all-strats
+  set Strategy-000 false
+  set Strategy-001 false
+  set Strategy-010 false
+  set Strategy-011 false
+  set Strategy-100 false
+  set Strategy-101 false
+  set Strategy-110 false
+  set Strategy-111 false
+end
+
+
 to init-patch  ;; patch procedure
   init-patch-counters
-  set strategy (random 8)
+  set strategy one-of stratlist
 end
 
 
@@ -63,7 +99,7 @@ to-report strategy-to-color [ s1 ]
   if (5 = s1) [ report 7 ]  ;; dark gray
   if (6 = s1) [ report 3 ]  ;; light gray
   if (7 = s1) [ report blue ]
-  if (8 = s1) [ report 27 ] ;; light orange
+  if (8 = s1) [ error "Something went wrong with assigning strategies" ] ;; light orange
 end
 
 to display-agents
@@ -474,24 +510,24 @@ PENS
 
 SLIDER
 52
-415
+433
 224
-448
+466
 rounds_to_play
 rounds_to_play
 4
 200
-200.0
-4
+50.0
+2
 1
 NIL
 HORIZONTAL
 
 SLIDER
 54
-370
+388
 232
-403
+421
 imitation_radius
 imitation_radius
 1
@@ -519,6 +555,138 @@ NIL
 NIL
 1
 
+TEXTBOX
+16
+64
+166
+82
+Included Strategies
+11
+0.0
+1
+
+SWITCH
+14
+84
+153
+117
+Strategy-000
+Strategy-000
+0
+1
+-1000
+
+SWITCH
+14
+120
+153
+153
+Strategy-001
+Strategy-001
+0
+1
+-1000
+
+SWITCH
+14
+155
+153
+189
+Strategy-010
+Strategy-010
+0
+1
+-1000
+
+SWITCH
+13
+191
+152
+225
+Strategy-011
+Strategy-011
+0
+1
+-1000
+
+SWITCH
+13
+226
+152
+260
+Strategy-100
+Strategy-100
+0
+1
+-1000
+
+SWITCH
+13
+262
+152
+296
+Strategy-101
+Strategy-101
+0
+1
+-1000
+
+SWITCH
+13
+297
+152
+331
+Strategy-110
+Strategy-110
+0
+1
+-1000
+
+SWITCH
+13
+333
+152
+367
+Strategy-111
+Strategy-111
+0
+1
+-1000
+
+BUTTON
+165
+130
+244
+164
+Include All
+include-all-strats
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+165
+181
+245
+215
+Exclude All
+exclude-all-strats
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
 @#$#@#$#@
 ## WHAT IS IT?
 
@@ -527,6 +695,8 @@ This is an agent-based model of neighbor interactions which uses evolutionary ga
 ## HOW IT WORKS
 
 Agents (which are individual patches and do not move) are initiated with one of eight possible reactive strategies at random. On each tick, each agent plays rounds_to_play games with each of their neighbors one at a time. The agents sum up the points they get from each these interactions (this is their "score"). Then, after everyone has played all of their neighbors, each agent checks to see if any of their neighbors got a higher score then they did. If so, they copy the strategy of their highest scoring agent.
+
+Each reactive strategy is denoted by a 3 digit string. The first digit is whether they cooperate in the first game (1 for yes, 0 for no). The second two digits are how they respond to cooperation and defection on the previous round, respectively (with 1 being cooperate and 0 being defect).
 
 ## HOW TO USE IT
 
