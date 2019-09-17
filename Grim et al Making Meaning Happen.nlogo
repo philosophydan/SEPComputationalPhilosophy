@@ -9,7 +9,6 @@ to setup
   setup-patches
   setup-predators
   setup-foods
-  setup-one-side-only
 end
 
 to setup-patches
@@ -23,23 +22,6 @@ to setup-patches
     set sound-state 3   ;; all make no sound at first
     set status 3  ;; nothing happen to all patches at first
     recolor-patches
-    if Islands [
-      if pxcor = 0 [
-        set pcolor black
-      ]
-      if pxcor = min-pxcor [
-        set pcolor black
-      ]
-      if pxcor = max-pxcor [
-        set pcolor black
-      ]
-      if pycor = min-pycor [
-        set pcolor black
-      ]
-      if pycor = max-pycor [
-        set pcolor black
-      ]
-    ]
     set points 0
     ]
   reset-ticks
@@ -66,28 +48,6 @@ to setup-foods
   ]
 end
 
-to setup-one-side-only
-  if One-side-only [
-    ask patches [
-      if (pxcor > min-pxcor and pxcor < 0) [
-        if (pycor != max-pycor and pycor != min-pycor) [
-          if code = 1212 or code = 2121 [
-            set fed-value 1
-            set hurt-value 1
-            set s1-value 1
-            set s2-value 1
-            set code (fed-value * 1000 + hurt-value * 100 + s1-value * 10 + s2-value)
-            set action-state (1 + random 3)
-            set sound-state 3 ;; all patch have no sound at first
-            set status 3   ;; nothing happen to all patches at first
-            recolor-patches
-            set points 0
-          ]
-          ]
-        ]
-      ]
-    ]
-end
 
 to go
   move-predators
@@ -411,7 +371,7 @@ MONITOR
 52
 220
 142
-266
+265
 #1 strategy
 one-strat
 17
@@ -444,7 +404,7 @@ MONITOR
 52
 364
 142
-410
+409
 #4 strategy
 four-strat
 17
@@ -455,54 +415,12 @@ MONITOR
 52
 412
 142
-458
+457
 #5 strategy
 five-strat
 17
 1
 11
-
-SWITCH
-656
-39
-759
-72
-Islands
-Islands
-1
-1
--1000
-
-SWITCH
-656
-86
-804
-119
-One-side-only
-One-side-only
-1
-1
--1000
-
-TEXTBOX
-766
-41
-881
-69
-Splits the population into two islands
-11
-0.0
-1
-
-TEXTBOX
-813
-87
-963
-115
-Removes optimal strategies from left island
-11
-0.0
-1
 
 TEXTBOX
 29
