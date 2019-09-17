@@ -217,7 +217,8 @@ to go
         [ if random 100 > recalcitrance [copy-belief] ]
     ]
     set faux-tick faux-tick + 1
-    do-plot
+    tick
+    ;do-plot
 
     ;;stop each run when:
     if stopping-condition = "length of run = 100" [
@@ -312,6 +313,7 @@ end
 
 to do-plot
   set-current-plot "Belief Distribution"
+  clear-plot
   set-current-plot-pen "Beliefs"
   histogram [my-belief] of nodes
 end
@@ -644,7 +646,7 @@ count
 10.0
 true
 false
-"" ""
+"" "do-plot"
 PENS
 "Beliefs" 1.0 1 -16777216 true "" ""
 
