@@ -534,7 +534,7 @@ Improves setup time by chosing top performers from 500 random heuristics (rather
 MONITOR
 31
 463
-870
+731
 508
 Heuristics in Highest-Performaing Group
 map [i -> [heuristic] of i] expertgroup
@@ -545,13 +545,23 @@ map [i -> [heuristic] of i] expertgroup
 MONITOR
 31
 411
-870
+731
 456
 Heuristics in Random Group
 map [i -> [heuristic] of i] randomgroup
 17
 1
 11
+
+TEXTBOX
+744
+415
+894
+499
+Note: List of heuristics may not print correctly on Web version. The first three numbers are the first heuristic. The second three are the second. Etc.
+11
+0.0
+1
 
 @#$#@#$#@
 ## WHAT IS IT?
