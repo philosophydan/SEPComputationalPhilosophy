@@ -1,10 +1,6 @@
 breed [nodes node]
 
-globals [finalfinalconverged finalfinalconvergedonhighest finalconvergedonhighest finalconverged converged run-number highest highest-yes total iteration curve start-point end-point counter component-size giant-component-size
-  giant-start-node num finalperc superfinalperc superduperfinalperc maxperc minperc varperc meanperc finalperclist finalhighest
-  finalfinalhighest clust-coeff clustcoeffsum numqualifyingnodes tot-links num-neighbors current-node finalclusterlist avcluster average-path-length
-  av-av-pathlist mean-path-length av-giant-componentlist mean-giant-component average-path-length2 average-path-length2list mean-path-length-giant top bottom finalticks stoppinglist flag
-  avstopping discoveryticks discoverylist avdiscovery ghighest-yes value2 warning]
+globals [converged]
 
 nodes-own [my-recalcitrance my-speed my-uncertainty my-belief utility friends explored?]
 
@@ -12,13 +8,6 @@ to setup
   clear-all
 
   set-default-shape turtles "circle"
-  set finalperclist []
-  set finalclusterlist []
-  set av-av-pathlist []
-  set av-giant-componentlist []
-  set average-path-length2list []
-  set stoppinglist []
-  set discoverylist []
 
   network-bit
 
@@ -29,7 +18,6 @@ end
 
 
 to go
-  set ghighest-yes false
   let stopping-condition-met false
 
   ;;run each run like this:
@@ -113,6 +101,7 @@ to-report find-utility [value]
   ]
 
   if distribution = "custom-2" [
+    let value2 0
 
     if value <= 90 [set value2 (value + 10)]
     if value > 90 [set value2 (value - 90)]
@@ -162,20 +151,6 @@ to add-edge
   ]
 end
 
-to draw-network
-
-  set-default-shape turtles "circle"
-  set finalperclist []
-  set finalclusterlist []
-  set av-av-pathlist []
-  set av-giant-componentlist []
-  set average-path-length2list []
-  set stoppinglist []
-  set discoverylist []
-
-  network-bit
-
-end
 
 to recolor-nodes
 
@@ -185,6 +160,7 @@ to recolor-nodes
     ifelse (distribution != "custom-2") [set color red]
 
     [
+      let value2 0
 
       if my-belief <= 90 [set value2 (my-belief + 10)]
       if my-belief > 90 [set value2 (my-belief - 90)]
@@ -398,7 +374,7 @@ CHOOSER
 network-type
 network-type
 "connected" "hub" "random" "ring" "wheel" "lattice" "random2"
-6
+5
 
 SLIDER
 20
