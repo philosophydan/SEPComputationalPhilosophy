@@ -322,6 +322,7 @@ to make-node
   set my-uncertainty uncertainty
   set my-belief random-float 100
   set utility 0
+  set size 2
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
@@ -374,7 +375,7 @@ CHOOSER
 network-type
 network-type
 "connected" "hub" "random" "ring" "wheel" "lattice" "random2"
-5
+6
 
 SLIDER
 20
