@@ -1,5 +1,3 @@
-extensions [profiler]
-
 breed [nodes node]
 
 globals [faux-tick finalfinalconverged finalfinalconvergedonhighest finalconvergedonhighest finalconverged converged run-number highest highest-yes total iteration curve start-point end-point counter component-size giant-component-size
@@ -9,15 +7,6 @@ globals [faux-tick finalfinalconverged finalfinalconvergedonhighest finalconverg
   avstopping discoveryticks discoverylist avdiscovery ghighest-yes value2 warning]
 
 nodes-own [my-recalcitrance my-speed my-uncertainty my-belief utility friends explored?]
-
-to profiler
-  setup                  ;; set up the model
-  profiler:start         ;; start profiling
-  go       ;; run something you want to measure
-  profiler:stop          ;; stop profiling
-  print profiler:report  ;; view the results
-  profiler:reset         ;; clear the data
-end
 
 to setup
   clear-all
@@ -217,7 +206,6 @@ end
 
 
 to go
-  no-display ;; for speeding up web version (just removes updating of network pic, which wasn't changing anyway)
   set ghighest-yes false
   let stopping-condition-met false
 
