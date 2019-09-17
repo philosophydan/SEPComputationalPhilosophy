@@ -288,7 +288,6 @@ to network-bit
         make-node
         fd max-pxcor - 1 ];;puts them in a circle
       repeat number-links [add-edge]
-      ask links [ set color [color] of end1 ]
       ;;ask nodes [recolor]
     ]
 
@@ -399,7 +398,7 @@ CHOOSER
 network-type
 network-type
 "connected" "hub" "random" "ring" "wheel" "lattice" "random2"
-2
+6
 
 SLIDER
 20
@@ -661,39 +660,42 @@ converged
 @#$#@#$#@
 ## WHAT IS IT?
 
-This section could give a general understanding of what the model is trying to show or explain.
+This is a version of a model of networked epistemic agents on an epistemic landscape used in the following paper:
 
-## HOW IT WORKS
+Patrick Grim & Daniel J. Singer, Steven Fisher, Aaron Bramson, William Berger, Christopher Reade, Carissa Flocken, and Adam Sales. (2013) “Scientific Networks on Data Landscapes: Question Difficulty, Epistemic Success, and Convergence” Episteme, Volume 10, Number 4, p. 441-464
 
-This section could explain what rules the agents use to create the overall behavior of the model.
+In this model, there are agents connected in a network, each of whom has a location on the x axis of the epistemic landscape. On each round of the model, each agent finds their highest-performing network-neighbor (measured by how high the neighbor's point on the epistemic landscape performs, which is measured by the y-axis). They then imitate their neighbor with 1-*recalcitrance*% chance. When they imitate their neighbor, they might be off of their neighbor's true position by *uncertainty* spots. They also only move *speed*% of the way to what they see as their neighbor's location.
 
-## HOW TO USE IT
+There are two built-in stopping conditions for the model: (1) stopping after 100 ticks (on each tick, everybody moves with 1-*recalcitrance*% chance), or (2) stopping if there is convergence (measured by everyone being within *uncertainty* of each other) or if 10,000 ticks have passed.
 
-This section could explain how to use the model, including a description of each of the items in the interface tab.
-
-## THINGS TO NOTICE
-
-This section could give some ideas of things for the user to notice while running the model.
+When the landscape is "custom2", the color of the agent indicates which peak of the landscape it is on. Blue is the less optimal peak and red is the higher peak, which intensities mirroring how close the agents are to the center of the peak.
 
 ## THINGS TO TRY
 
-This section could give some ideas of things for the user to try to do (move sliders, switches, etc.) with the model.
+The model is designed to test different networks and epistemic landscapes. Here is what the various network options do:
 
-## EXTENDING THE MODEL
+"connected": fully connected network.
 
-This section could give some ideas of things to add or change in the procedures tab to make the model more complicated, detailed, accurate, etc.
+"hub": one agent in the center connected to everyone.
 
-## NETLOGO FEATURES
+"random": random network with *edge-prob* of an edge between any two agents.
 
-This section could point out any especially interesting or unusual features of NetLogo that the model makes use of, particularly in the Procedures tab.  It might also point out places where workarounds were needed because of missing features.
+"random2": random network with *number-links* random edges.
 
-## RELATED MODELS
+"ring": everyone connected to 2 times *radius* neighbors (so *radius*=1 is a circle). Can also be used with *rewire-prob* not equal to 0 to make a small world network.
 
-This section could give the names of models in the NetLogo Models Library or elsewhere which are of related interest.
+"wheel": everyone connected to two neighbors in a circle except for one person who is connected to everyone.
+
+"lattice": lattice network with agents setup like corners in a checkerboard.
+
+Various landscape setups are also modelled. Grim and Singer focus on "custom2", which is a landscape of variable "pointiness" of the peak, which is controlled by the variable *zed*.
+
 
 ## CREDITS AND REFERENCES
 
-This section could contain a reference to the model's URL on the web if it has one, as well as any other necessary credits or references.
+This model was made primarily by Patrick Grim, Daniel J. Singer, and Aaron Bramson.  See the citation below for more information about the model:
+
+Patrick Grim & Daniel J. Singer, Steven Fisher, Aaron Bramson, William Berger, Christopher Reade, Carissa Flocken, and Adam Sales. (2013) “Scientific Networks on Data Landscapes: Question Difficulty, Epistemic Success, and Convergence” Episteme, Volume 10, Number 4, p. 441-464
 @#$#@#$#@
 default
 true
