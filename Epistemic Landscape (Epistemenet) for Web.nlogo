@@ -1,12 +1,23 @@
+extensions [profiler]
+
 breed [nodes node]
 
-globals [finalfinalconverged finalfinalconvergedonhighest finalconvergedonhighest finalconverged converged run-number highest highest-yes total iteration curve start-point end-point counter component-size giant-component-size
+globals [faux-tick finalfinalconverged finalfinalconvergedonhighest finalconvergedonhighest finalconverged converged run-number highest highest-yes total iteration curve start-point end-point counter component-size giant-component-size
   giant-start-node num finalperc superfinalperc superduperfinalperc maxperc minperc varperc meanperc finalperclist finalhighest
   finalfinalhighest clust-coeff clustcoeffsum numqualifyingnodes tot-links num-neighbors current-node finalclusterlist avcluster average-path-length
   av-av-pathlist mean-path-length av-giant-componentlist mean-giant-component average-path-length2 average-path-length2list mean-path-length-giant top bottom finalticks stoppinglist flag
   avstopping discoveryticks discoverylist avdiscovery ghighest-yes value2 warning]
 
 nodes-own [my-recalcitrance my-speed my-uncertainty my-belief utility friends explored?]
+
+to profiler
+  setup                  ;; set up the model
+  profiler:start         ;; start profiling
+  go       ;; run something you want to measure
+  profiler:stop          ;; stop profiling
+  print profiler:report  ;; view the results
+  profiler:reset         ;; clear the data
+end
 
 to setup
   clear-all
@@ -19,11 +30,13 @@ to setup
   set average-path-length2list []
   set stoppinglist []
   set discoverylist []
+  set faux-tick 0
 
   network-bit
 
 
   reset-ticks
+  tick ;; this model uses ticks in a funny way to optimize web display speed
 end
 
 
@@ -200,45 +213,40 @@ to make-node
   set my-uncertainty uncertainty
   set my-belief random-float 100
   set utility 0
-  recolor
-end
-
-
-to recolor       ;;------Sets Color by Strategy------
-  set color 6 + (100 - ((int (my-belief / 10)) * 10))
 end
 
 
 to go
+  no-display ;; for speeding up web version (just removes updating of network pic, which wasn't changing anyway)
   set ghighest-yes false
   let stopping-condition-met false
 
   while [not stopping-condition-met] [
     ;;run each run like this:
-      ask nodes [set utility find-utility my-belief]
-      ask nodes [
-        if any? friends
+    ask nodes [set utility find-utility my-belief]
+    ask nodes [
+      if any? friends
         [ if random 100 > recalcitrance [copy-belief] ]
-      ]
-      tick
-      do-plot
+    ]
+    set faux-tick faux-tick + 1
+    do-plot
 
-      ;;stop each run when:
-      if stopping-condition = "length of run = 100" [
-        if ticks = 100 [set stopping-condition-met true]
+    ;;stop each run when:
+    if stopping-condition = "length of run = 100" [
+      if faux-tick >= 100 [set stopping-condition-met true]
+    ]
+    if stopping-condition = "convergence" [
+      let bestbelief [my-belief] of max-one-of turtles [utility]
+      if not any? turtles with [abs(((my-belief - bestbelief + 50) mod 100) - 50) > uncertainty] [
+        set stopping-condition-met true
+        set converged true
       ]
-      if stopping-condition = "convergence" [
-        let bestbelief [my-belief] of max-one-of turtles [utility]
-        if not any? turtles with [abs(((my-belief - bestbelief + 50) mod 100) - 50) > uncertainty] [
-          set stopping-condition-met true
-          set converged true
-        ]
-        if ticks >= 10000 [
-          set stopping-condition-met true
-          set converged false
-        ]
+      if faux-tick >= 10000 [
+        set stopping-condition-met true
+        set converged false
       ]
     ]
+  ]
 end
 
 to copy-belief
@@ -440,9 +448,9 @@ GRAPHICS-WINDOW
 30
 1
 1
-1
+0
 ticks
-30.0
+10000.0
 
 SLIDER
 20
@@ -467,7 +475,7 @@ CHOOSER
 network-type
 network-type
 "connected" "hub" "random" "ring" "wheel" "lattice" "random2"
-6
+2
 
 SLIDER
 20
@@ -495,21 +503,6 @@ radius
 4
 2.0
 1
-1
-NIL
-HORIZONTAL
-
-SLIDER
-20
-229
-192
-262
-runs
-runs
-0
-3000
-1000.0
-100
 1
 NIL
 HORIZONTAL
@@ -696,15 +689,15 @@ distribution
 8
 
 SLIDER
-374
-202
-546
-235
+20
+218
+192
+251
 number-links
 number-links
 0
 (population * 32)
-60.0
+10.0
 1
 1
 NIL
@@ -717,50 +710,6 @@ MONITOR
 71
 finalperc
 finalperc
-17
-1
-11
-
-MONITOR
-260
-170
-320
-215
-NIL
-maxperc
-17
-1
-11
-
-MONITOR
-260
-219
-317
-264
-NIL
-minperc
-17
-1
-11
-
-MONITOR
-260
-122
-317
-167
-NIL
-varperc
-17
-1
-11
-
-MONITOR
-260
-74
-327
-119
-NIL
-meanperc
 17
 1
 11
@@ -840,6 +789,27 @@ MONITOR
 363
 % Run Converged
 finalfinalconverged
+17
+1
+11
+
+TEXTBOX
+197
+229
+347
+247
+for rand2 net
+11
+0.0
+1
+
+MONITOR
+264
+81
+321
+126
+ticks
+faux-tick
 17
 1
 11
