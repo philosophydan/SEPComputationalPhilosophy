@@ -1,4 +1,4 @@
-extensions [profiler]
+; extensions [profiler]
 
 ;; Global variables
 ;;   bandit-means: a list with the mean of each bandit
@@ -317,23 +317,23 @@ to network-gap
 end
 
 
-;; This uses the profiler extension to measure where time is being spent in the simulation process.  Useful for optimization
-to profile
-  profiler:reset
-  set Visuals? False
-  print "EPSILON = 0"
-  profiler:start
-  set epsilon 0
-  go-full
-  print profiler:report
-  profiler:reset
-  print "EPSILON = 0.5"
-  profiler:start
-  set epsilon 0.5
-  go-full
-  print profiler:report
-
-end
+;;; This uses the profiler extension to measure where time is being spent in the simulation process.  Useful for optimization
+;to profile
+;  profiler:reset
+;  set Visuals? False
+;  print "EPSILON = 0"
+;  profiler:start
+;  set epsilon 0
+;  go-full
+;  print profiler:report
+;  profiler:reset
+;  print "EPSILON = 0.5"
+;  profiler:start
+;  set epsilon 0.5
+;  go-full
+;  print profiler:report
+;
+;end
 @#$#@#$#@
 GRAPHICS-WINDOW
 230
